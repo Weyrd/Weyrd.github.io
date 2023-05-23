@@ -33,5 +33,9 @@
     "gulp-sass": "^5.0.0",
     "gulp-uglify": "^3.0.0",
     "sass": "^1.25.0"
+  },
+  "dependencies": {
+    "gulp-imagemin": "^7.1.0",
+    "sharp": "^0.32.1"
   }
 }
