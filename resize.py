@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+from PIL.ExifTags import TAGS
 
 # Directory paths
 source_dir = "./images"
@@ -22,10 +23,10 @@ for file in image_files:
     
     # Copy the image to the target directory
     target_path = os.path.join(target_dir, file)
-    image.save(target_path)
+    image.save(target_path, exif=image.info.get("exif"))
     
     # Calculate the thumbnail size while maintaining the aspect ratio
-    max_size = 500
+    max_size = 450
     width, height = image.size
     if width > height:
         thumbnail_width = max_size
@@ -39,11 +40,11 @@ for file in image_files:
     thumbnail = image.resize(thumbnail_size, Image.ANTIALIAS)
     
     # Decrease the quality of the thumbnail
-    thumbnail_quality = 70
+    thumbnail_quality = 60
     thumbnail_path = os.path.join(thumbnail_dir, file)
-    thumbnail.save(thumbnail_path, optimize=True, quality=thumbnail_quality)
+    thumbnail.save(thumbnail_path, optimize=True, quality=thumbnail_quality, exif=image.info.get("exif"))
 
-    # then delete the original image
+    # Then delete the original image
     os.remove(source_path)
 
 print("Image processing complete!")
