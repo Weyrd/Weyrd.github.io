@@ -1,6 +1,7 @@
 import os
 from PIL import Image
 from PIL.ExifTags import TAGS
+from progress.bar import Bar
 
 # Directory paths
 source_dir = "./images"
@@ -14,6 +15,9 @@ os.makedirs(thumbnail_dir, exist_ok=True)
 # Get the list of image files in the source directory
 image_files = [file for file in os.listdir(source_dir) if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
+# Create a progress bar with the total number of image files
+progress_bar = Bar('Processing images', max=len(image_files))
+
 for file in image_files:
     # Get the full path of the source image
     source_path = os.path.join(source_dir, file)
@@ -23,7 +27,7 @@ for file in image_files:
     
     # Copy the image to the target directory
     target_path = os.path.join(target_dir, file)
-    image.save(target_path, exif=image.info.get("exif"))
+    image.save(target_path, exif=image.info.get("exif", b""))
     
     # Calculate the thumbnail size while maintaining the aspect ratio
     max_size = 450
@@ -42,9 +46,13 @@ for file in image_files:
     # Decrease the quality of the thumbnail
     thumbnail_quality = 60
     thumbnail_path = os.path.join(thumbnail_dir, file)
-    thumbnail.save(thumbnail_path, optimize=True, quality=thumbnail_quality, exif=image.info.get("exif"))
+    thumbnail.save(thumbnail_path, optimize=True, quality=thumbnail_quality, exif=image.info.get("exif", b""))
 
     # Then delete the original image
     os.remove(source_path)
+    
+    # Update the progress bar
+    progress_bar.next()
 
+progress_bar.finish()
 print("Image processing complete!")
