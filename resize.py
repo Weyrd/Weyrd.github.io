@@ -2,6 +2,7 @@ import os
 from PIL import Image
 from PIL.ExifTags import TAGS
 from progress.bar import Bar
+import time
 
 # Directory paths
 source_dir = "./images"
