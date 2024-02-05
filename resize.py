@@ -42,7 +42,7 @@ for file in image_files:
         
     # Create the thumbnail with the calculated size
     thumbnail_size = (thumbnail_width, thumbnail_height)
-    thumbnail = image.resize(thumbnail_size, Image.ANTIALIAS)
+    thumbnail = image.resize(thumbnail_size, Image.LANCZOS)
     
     # Decrease the quality of the thumbnail
     thumbnail_quality = 60
